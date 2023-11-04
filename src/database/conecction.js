@@ -1,21 +1,27 @@
-const {Pool} = require('pg');
+const {Pool, Client} = require('pg');
 const {config} = require('dotenv');
 
 config();
 
-async function cone(){
-    const pool = await new Pool({
-        connectionString : process.env.DATABASE_URL,
-        ssl: true
-    });
-    console.log(pool)
-    return pool;
-}
 
-async function getData(){
-    const pool = cone()
-    const cliente = pool.conect();
-    return await cliente.query('SELECT * FROM users');
-}
+// user?: string | undefined;
+// database?: string | undefined;
+// port: number;
+// host: string;
+// password?: string | undefined;
+// ssl: boolean;
 
-module.exports = getData;
+
+console.log()
+const pool = new Client({
+    ssl: true,
+    port : 5432,
+    host : 'dpg-cl35ll9novjs73bc6vdg-a.ohio-postgres.render.com',
+    user : 'nameundefined',
+    password : 'Qrdq9zywOXccs5B9EwbXOpZHUTiMa9YQ', 
+    database : 'expinge_9ti0'
+});
+
+pool.connect()
+
+module.exports = pool;

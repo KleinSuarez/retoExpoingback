@@ -1,8 +1,16 @@
 const pool = require('./conecction');
  
 async function getData(){
-    const cliente = pool.conect();
-    return await cliente.query('SELECT * FROM users');
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    return await pool.query('SELECT * FROM users');
+    // console.log(value.then(  (rows)=>(
+    //     console.log(rows)
+    //         )))
 }
 
-module.exports = {getData};
+async function registerUser(name, email, password){
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    return await pool.query('INSERT INTO users (name, email, password)',[name, email, password]);
+}
+
+module.exports = {getData, registerUser};
