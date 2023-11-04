@@ -1,7 +1,6 @@
 const pool = require('./conecction');
  
 async function getData(){
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return await pool.query('SELECT * FROM users');
     // console.log(value.then(  (rows)=>(
     //     console.log(rows)
@@ -9,8 +8,11 @@ async function getData(){
 }
 
 async function registerUser(name, email, password){
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    return await pool.query('INSERT INTO users (name, email, password)',[name, email, password]);
+    return await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)',[name, email, password]);
 }
 
-module.exports = {getData, registerUser};
+async function findUserByEmailAndPassword(email, password){
+    return await pool.query('SELECT id, name, email FROM users WHERE users.email = $1 and users.password = $2',[email, password]);
+}
+
+module.exports = {getData, registerUser, findUserByEmailAndPassword}

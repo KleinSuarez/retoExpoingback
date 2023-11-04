@@ -1,4 +1,5 @@
 const users = require('../database/repository');
+const encrypt = require('../util/crypto/util.crypto')
 
 const get = async(req, res) => {
     const data = await users.getData()
@@ -14,8 +15,19 @@ const get = async(req, res) => {
 
 const registerUser = async(req, res) => {
     const {name, email, password} = req.body;
-    const data = await users.registerUser(name, email, password)
+    const encrypted = encrypt.encryptPassword(password);
+    await users.registerUser(name, email, encrypted)
     res.status(201).json({message: 'Register'});
 };
 
-module.exports = {get}
+const loginUser = async(req, res) => {
+    const {email, password} = req.body;
+    const value = await users.findUserByEmailAndPassword(email, password);
+    if (value.rows.length === 0){
+        res.status(401).json({message: 'No privileges'})
+    }else{
+        res.status(200).json(value.rows);
+    }    
+};
+
+module.exports = {get, registerUser, loginUser}
