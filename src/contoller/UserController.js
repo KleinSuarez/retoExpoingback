@@ -1,4 +1,4 @@
-const users = require('../database/repository');
+const users = require('../database/Repository');
 const encrypt = require('../util/crypto/util.crypto')
 
 const get = async(req, res) => {
@@ -16,8 +16,14 @@ const get = async(req, res) => {
 const registerUser = async(req, res) => {
     const {name, email, password} = req.body;
     const encrypted = encrypt.encryptPassword(password);
-    await users.registerUser(name, email, encrypted)
-    res.status(201).json({message: 'Register'});
+    const value = await users.findUserByEmailAndPassword(email, encrypted);
+    console.log(value)
+    if (value.rows.length === 0){
+        await users.registerUser(name, email, encrypted)
+        res.status(201).json({message: 'Register'});
+    }else{
+        res.status(400).json({message: 'Data duplicate'})
+    }
 };
 
 const loginUser = async(req, res) => {

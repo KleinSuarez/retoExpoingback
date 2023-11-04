@@ -2,9 +2,6 @@ const pool = require('./conecction');
  
 async function getData(){
     return await pool.query('SELECT * FROM users');
-    // console.log(value.then(  (rows)=>(
-    //     console.log(rows)
-    //         )))
 }
 
 async function registerUser(name, email, password){
